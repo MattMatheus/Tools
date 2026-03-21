@@ -27,6 +27,14 @@ This prototype is intentionally small and uses only the Go standard library.
 go build ./cmd/artifacts
 ```
 
+## Flywheel Wrapper
+
+Preferred Flywheel entrypoint:
+
+```bash
+./flywheel-artifacts
+```
+
 ## Example
 
 ```bash
@@ -37,6 +45,7 @@ go build ./cmd/artifacts
 ./artifacts --config ./configs/flywheel.sample.json select --ready true --stage planning /mounts/planning
 ./artifacts --config ./configs/default.sample.json mounts list
 ./artifacts --config ./configs/flywheel.sample.json search planning observer
+./flywheel-artifacts select --ready true --stage planning /mounts/planning
 ```
 
 ## Mutation Example
