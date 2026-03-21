@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "base_dir": "/Users/foundry/AgenticDevelopment/Flywheel",
+  "audit_log": "/Users/foundry/AgenticDevelopment/Artifacts/audit/flywheel-artifact-audit.log",
+  "mounts": [
+    {
+      "name": "planning",
+      "root": "flywheel/artifacts/planning",
+      "purpose": "Flywheel planning artifacts",
+      "mode": "readwrite",
+      "default_kind": "planning_note",
+      "allowed_kinds": ["planning_note"],
+      "allowed_globs": ["PLAN-*.md", "README.md"]
+    },
+    {
+      "name": "observer",
+      "root": "flywheel/artifacts/observer",
+      "purpose": "Flywheel observer artifacts",
+      "mode": "readwrite",
+      "default_kind": "observer_report",
+      "allowed_kinds": ["observer_report", "verification_record"],
+      "allowed_globs": ["OBSERVER-REPORT-*.md", "*.log", "README.md"]
+    },
+    {
+      "name": "release",
+      "root": "flywheel/artifacts/release",
+      "purpose": "Flywheel release artifacts",
+      "mode": "readwrite",
+      "default_kind": "release_bundle",
+      "allowed_kinds": ["release_bundle"],
+      "allowed_globs": ["RELEASE-BUNDLE-*.md", "README.md"]
+    }
+  ]
+}

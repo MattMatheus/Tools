@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "base_dir": "/Users/foundry/AgenticDevelopment",
+  "audit_log": "/Users/foundry/AgenticDevelopment/Artifacts/audit/artifact-audit.log",
+  "mounts": [
+    {
+      "name": "planning",
+      "root": "Artifacts/planning",
+      "purpose": "workspace-level planning artifacts",
+      "mode": "readwrite",
+      "default_kind": "planning_note",
+      "allowed_kinds": ["planning_note"],
+      "allowed_globs": ["PLAN-*.md"]
+    },
+    {
+      "name": "observer",
+      "root": "Artifacts/observer",
+      "purpose": "workspace-level observer artifacts",
+      "mode": "readwrite",
+      "default_kind": "observer_report",
+      "allowed_kinds": ["observer_report", "verification_record"],
+      "allowed_globs": ["OBSERVER-REPORT-*.md", "*.log"]
+    },
+    {
+      "name": "release",
+      "root": "Artifacts/release",
+      "purpose": "workspace-level release artifacts",
+      "mode": "readwrite",
+      "default_kind": "release_bundle",
+      "allowed_kinds": ["release_bundle"],
+      "allowed_globs": ["RELEASE-BUNDLE-*.md"]
+    },
+    {
+      "name": "handoff",
+      "root": "Artifacts/handoff",
+      "purpose": "workspace-level handoff artifacts",
+      "mode": "readwrite",
+      "default_kind": "handoff_note",
+      "allowed_kinds": ["handoff_note"],
+      "allowed_globs": ["HANDOFF-*.md"]
+    },
+    {
+      "name": "evidence",
+      "root": "Artifacts/evidence",
+      "purpose": "workspace-level evidence artifacts",
+      "mode": "readwrite",
+      "default_kind": "evidence_note",
+      "allowed_kinds": ["evidence_note", "verification_record"],
+      "allowed_globs": ["EVIDENCE-*.md", "*.log"]
+    },
+    {
+      "name": "manifests",
+      "root": "Artifacts/manifests",
+      "purpose": "workspace-level manifest artifacts",
+      "mode": "readwrite",
+      "default_kind": "manifest",
+      "allowed_kinds": ["manifest"],
+      "allowed_globs": ["MANIFEST-*.json"]
+    }
+  ]
+}
