@@ -282,6 +282,7 @@ func runManifest(ctx context.Context, s *store.Store, args []string, stdout io.W
 	var from multiFlag
 	var selectArgs multiFlag
 	purpose := fs.String("purpose", "", "manifest purpose")
+	actor := fs.String("actor", "", "actor id")
 	fs.Var(&from, "from", "artifact logical path with optional ::reason")
 	fs.Var(&selectArgs, "select", "selector expression: <logical-path>[::reason][?ready=true&stage=planning&cycle_id=proto-001&kind=planning_note]")
 	if err := fs.Parse(args[1:]); err != nil {
@@ -305,7 +306,7 @@ func runManifest(ctx context.Context, s *store.Store, args []string, stdout io.W
 		}
 		items = append(items, item)
 	}
-	manifest, err := s.CreateManifest(ctx, *purpose, items)
+	manifest, err := s.CreateManifestArtifact(ctx, *purpose, items, *actor)
 	if err != nil {
 		return 1, err
 	}
@@ -368,7 +369,7 @@ func printUsage(w io.Writer) {
 	fmt.Fprintln(w, "  artifacts --config <config.json> write <logical-path> [--from file | --body text]")
 	fmt.Fprintln(w, "  artifacts --config <config.json> append <logical-path> [--from file | --body text]")
 	fmt.Fprintln(w, "  artifacts --config <config.json> search <scope|all> <query>")
-	fmt.Fprintln(w, "  artifacts --config <config.json> manifest create --purpose <purpose> [--from <logical-path>[::reason]] [--select <selector>]")
+	fmt.Fprintln(w, "  artifacts --config <config.json> manifest create --purpose <purpose> [--actor id] [--from <logical-path>[::reason]] [--select <selector>]")
 }
 
 func buildFilter(ready string, stage string, cycleID string, kind string) (store.Filter, error) {

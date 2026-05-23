@@ -29,6 +29,15 @@
       "default_kind": "release_bundle",
       "allowed_kinds": ["release_bundle"],
       "allowed_globs": ["RELEASE-BUNDLE-*.md", "README.md"]
+    },
+    {
+      "name": "manifests",
+      "root": "../Artifacts/manifests",
+      "purpose": "workspace-level manifest artifacts for Flywheel handoffs",
+      "mode": "readwrite",
+      "default_kind": "manifest",
+      "allowed_kinds": ["manifest"],
+      "allowed_globs": ["MANIFEST-*.json"]
     }
   ]
 }

@@ -19,6 +19,8 @@ Current scope:
 - `manifest create`
 - audit log emission for mutating operations
 
+`manifest create` persists a manifest artifact into the `manifests` mount and returns both the manifest payload and the written artifact metadata.
+
 This prototype is intentionally small and uses only the Go standard library.
 
 ## Build
@@ -99,6 +101,7 @@ Example:
 ## Manifest Helpers
 
 Manifests can be built from explicit paths or from selector expressions.
+The command writes a `MANIFEST-*.json` artifact into `/mounts/manifests` using the configured manifests mount.
 
 Selector format:
 

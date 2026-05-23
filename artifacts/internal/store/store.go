@@ -87,6 +87,11 @@ type Manifest struct {
 	Selected []ManifestItem `json:"selected"`
 }
 
+type ManifestWriteResult struct {
+	Manifest Manifest     `json:"manifest"`
+	Meta     ArtifactMeta `json:"meta"`
+}
+
 type ManifestItem struct {
 	Mount       string `json:"mount"`
 	LogicalPath string `json:"logical_path"`
@@ -373,6 +378,34 @@ func (s *Store) CreateManifest(_ context.Context, purpose string, items []Manife
 		RunID:    time.Now().UTC().Format(time.RFC3339),
 		Purpose:  purpose,
 		Selected: items,
+	}, nil
+}
+
+func (s *Store) CreateManifestArtifact(ctx context.Context, purpose string, items []ManifestItem, actor string) (ManifestWriteResult, error) {
+	manifest, err := s.CreateManifest(ctx, purpose, items)
+	if err != nil {
+		return ManifestWriteResult{}, err
+	}
+
+	body, err := json.MarshalIndent(manifest, "", "  ")
+	if err != nil {
+		return ManifestWriteResult{}, err
+	}
+
+	logicalPath := manifestLogicalPath(manifest)
+	meta, err := s.Write(ctx, logicalPath, WriteRequest{
+		Body:   string(body) + "\n",
+		Kind:   "manifest",
+		Reason: "manifest create",
+		Actor:  actor,
+	})
+	if err != nil {
+		return ManifestWriteResult{}, err
+	}
+
+	return ManifestWriteResult{
+		Manifest: manifest,
+		Meta:     meta,
 	}, nil
 }
 
@@ -714,6 +747,41 @@ func fallbackKind(mount config.Mount, requested string) string {
 		return requested
 	}
 	return mount.DefaultKind
+}
+
+func manifestLogicalPath(manifest Manifest) string {
+	runID := strings.ReplaceAll(manifest.RunID, ":", "")
+	runID = strings.ReplaceAll(runID, "-", "")
+	runID = strings.TrimSuffix(runID, "Z") + "Z"
+	return "/mounts/manifests/MANIFEST-" + sanitizePurpose(manifest.Purpose) + "-" + runID + ".json"
+}
+
+func sanitizePurpose(raw string) string {
+	raw = strings.ToLower(strings.TrimSpace(raw))
+	if raw == "" {
+		return "manifest"
+	}
+
+	var b strings.Builder
+	lastDash := false
+	for _, r := range raw {
+		switch {
+		case r >= 'a' && r <= 'z', r >= '0' && r <= '9':
+			b.WriteRune(r)
+			lastDash = false
+		default:
+			if !lastDash {
+				b.WriteByte('-')
+				lastDash = true
+			}
+		}
+	}
+
+	out := strings.Trim(b.String(), "-")
+	if out == "" {
+		return "manifest"
+	}
+	return out
 }
 
 func (s *Store) audit(operation string, mount string, logicalPath string, actor string, result string, reason string) error {
